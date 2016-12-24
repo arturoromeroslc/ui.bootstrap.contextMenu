@@ -1,6 +1,25 @@
 // Demo App
 angular.module('app', ['ui.bootstrap.contextMenu'])
 
+.component('demoComponent', {
+    template: `<button class="btn btn-default"
+            context-menu="$ctrl.otherMenuOptions"
+            cm-controller-as="$ctrl"
+            model="'Red'">Component Right Click</button>`,
+    controller: function() {
+        this.otherMenuOptions = [
+            ['Favorite Color', function ($itemScope, event, modelValue, text, $li) {
+                alert(modelValue);
+                console.info($itemScope.otherMenuOptions[0]);
+                console.info(event);
+                console.info(modelValue);
+                console.info(text);
+                console.info($li);
+            }]
+        ];
+    }
+})
+
 .controller('DemoController', [
     '$scope',
     function ($scope) {

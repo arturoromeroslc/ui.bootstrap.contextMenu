@@ -182,23 +182,27 @@ angular.module('ui.bootstrap.contextMenu', [])
                 });
             };
 
-            $li.on('click', function ($event) {
-                if($event.which == 1) {
-                  $event.preventDefault();
-                  $scope.$apply(function () {
-                      if (nestedMenu) {
-                          openNestedMenu($event);
-                      } else {
-                          $(event.currentTarget).removeClass('context');
-                          removeContextMenus();
+            $li.on('click', function($event) {
+                if ($event.which == 1) {
+                    $event.preventDefault();
+                    $scope.$apply(function() {
+                        if (nestedMenu) {
+                            openNestedMenu($event);
+                        } else {
+                            $(event.currentTarget).removeClass('context');
+                            removeContextMenus();
 
-                          if (angular.isFunction(item[1])) {
-                              item[1].call($scope, $scope, event, modelValue, text, $li);
-                          } else {
-                              item.click.call($scope, $scope, event, modelValue, text, $li);
-                          }
-                      }
-                  });
+                            if (angular.isFunction(item[1])) {
+                                if (typeof($scope.cmControllerAs) === "string") {
+                                    item[1].call($scope[$scope.cmControllerAs], $scope[$scope.cmControllerAs], event, modelValue, text, $li);
+                                } else {
+                                    item[1].call($scope, $scope, event, modelValue, text, $li);
+                                }
+                            } else {
+                                item.click.call($scope, $scope, event, modelValue, text, $li);
+                            }
+                        }
+                    });
                 }
             });
 
@@ -301,6 +305,11 @@ angular.module('ui.bootstrap.contextMenu', [])
 
     return function ($scope, element, attrs) {
         var openMenuEvent = "contextmenu";
+        
+        if (attrs.cmControllerAs && typeof(attrs.cmControllerAs) === "string") {
+            $scope.cmControllerAs = attrs.cmControllerAs;
+        }
+
         if(attrs.contextMenuOn && typeof(attrs.contextMenuOn) === "string"){
             openMenuEvent = attrs.contextMenuOn;
         }

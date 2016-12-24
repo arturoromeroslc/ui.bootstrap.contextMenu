@@ -105,6 +105,14 @@ Add your custom class to top element of the context menu
 <div context-menu="menuOptions" context-menu-class="custom_class"></div>
 ```
 
+## controllerAs
+
+If you are using controllerAs syntax in your controllers or if you are using Angular 1.5's component method, pass the controllerAs value to `cm-controller-as`
+
+```
+<my-component context-menu="$ctrl.menuOptions" cm-controller-as="$ctrl"></my-component>
+```
+
 ## Model Attribute (optional)
 
 In instances where a reference is not passed through the `$itemScope` (i.e. not using `ngRepeat`), there is a `model` attribute that can pass a value.
